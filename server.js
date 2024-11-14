@@ -2,6 +2,18 @@ console.log("Webserverni boshlash");
 const express = require("express");
 const app = express();
 const http=require("http");
+const fs = require("fs");
+
+let user;
+fs.readFile("database/user.json", "utf8", (err , data)=> {
+  if(err){
+    console.log("ERROR:" , err);
+  }
+
+else {
+  user = JSON.parse(data)
+}
+});
 
 //web server #1 entering code
 app.use(express.static("public"));
@@ -22,15 +34,9 @@ app.post("/create-item",(req, res)=> { console. log (req.body);
   res.json({test: "success"});
  });
 
-
-/*app.get('/hello', function (req, res) {
-    res.send(`<h1 style="background: red" >Hello World by Mike</h1>`);
-  });
-
-  app.get('/gift', function (req, res) {
-    res.send(`<h1 style="background: blue" >you are in the gift page</h1>`);
-  });
-  */
+ app.get('/author',  (req, res) => {
+  res.render("author", {user: user});
+});
 
   app.get('/', function (req, res) {
     res.render("harid");
